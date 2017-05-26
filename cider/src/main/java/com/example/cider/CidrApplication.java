@@ -4,9 +4,9 @@ package com.example.cider;
 		import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CiderApplication {
+public class CidrApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CiderApplication.class, args);
+		SpringApplication.run(CidrApplication.class, args);
 	}
 }
