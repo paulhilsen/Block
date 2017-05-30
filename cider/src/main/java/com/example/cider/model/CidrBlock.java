@@ -9,6 +9,7 @@ package com.example.cider.model;
 public class CidrBlock {
 
     Long id;
+    int vid;
     String ipBlock;
     int number;
     String dateEntered;
@@ -17,8 +18,9 @@ public class CidrBlock {
 
     public CidrBlock() {}
 
-    public CidrBlock(Long id, String ipBlock, String dateEntered, String dateUpdated, int number) {
+    public CidrBlock(Long id, int vid, String ipBlock, String dateEntered, String dateUpdated, int number) {
         this.id = id;
+        this.vid = vid;
         this.ipBlock = ipBlock;
         this.dateEntered = dateEntered;
         this.dateUpdated = dateUpdated;
@@ -64,4 +66,15 @@ public class CidrBlock {
     public void setNumber(int number) {
         this.number = number;
     }
+
+
+    public int getVPC() {
+        return vid;
+    }
+
+    public void setVPC(int VPC) {
+        this.vid = VPC;
+    }
 }
+
+
