@@ -27,7 +27,6 @@ public class CidrBlockController {
     }
 
     //deployed locally, an example of the url is: http://localhost:8080/api/v1/vpc/1/tenants/3/cidrs?number=3&size=45&status=good
-    //method was previously:  "public List<CidrBlock> list" changed to "public String list" for testing
     @RequestMapping(value = "vpc/{vid}/tenants/{tid}/cidrs", method = RequestMethod.GET)
     public List<CidrBlock> list(@PathVariable int vid, @PathVariable int tid, @RequestParam int number, @RequestParam int size,  @RequestParam String status)
     {
