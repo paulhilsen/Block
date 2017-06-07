@@ -12,6 +12,9 @@ public class CidrBlock {
     int vid;
     String ipBlock;
     int number;
+    int IPs1;
+    int IPs2;
+    int IPs3;
     String dateEntered;
     String dateUpdated;
 
@@ -74,6 +77,38 @@ public class CidrBlock {
 
     public void setVPC(int VPC) {
         this.vid = VPC;
+    }
+
+    public int getVid() {
+        return vid;
+    }
+
+    public void setVid(int vid) {
+        this.vid = vid;
+    }
+
+    public int getIPs1() {
+        return IPs1;
+    }
+
+    public void setIPs1(int IPs1) {
+        this.IPs1 = IPs1;
+    }
+
+    public int getIPs2() {
+        return IPs2;
+    }
+
+    public void setIPs2(int IPs2) {
+        this.IPs2 = IPs2;
+    }
+
+    public int getIPs3() {
+        return IPs3;
+    }
+
+    public void setIPs3(int IPs3) {
+        this.IPs3 = IPs3;
     }
 }
 
