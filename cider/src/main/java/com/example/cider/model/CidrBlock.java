@@ -17,6 +17,7 @@ public class CidrBlock {
     int IPs3;
     String dateEntered;
     String dateUpdated;
+    String fullIntIp;
 
 
     public CidrBlock() {}
@@ -109,6 +110,15 @@ public class CidrBlock {
 
     public void setIPs3(int IPs3) {
         this.IPs3 = IPs3;
+    }
+
+
+    public String getFullIntIp() {
+        return fullIntIp;
+    }
+
+    public void setFullIntIp(String fullIntIp) {
+        this.fullIntIp = fullIntIp;
     }
 }
 

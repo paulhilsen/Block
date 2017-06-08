@@ -13,6 +13,6 @@ public interface CidrBlockDao {
 
     List<CidrBlock> getSectionCidrBlocks(int vid);
 
-    int insertNewCidrBlock( int vid, String block, int IPs1, int IPs2, int IPs3, int bits);
+    int insertNewCidrBlock( int vid, String block, int IPs1, int IPs2, int IPs3, int bits, String fullIntIp);
 
 }

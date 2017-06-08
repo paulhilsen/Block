@@ -49,7 +49,7 @@ public class CidrBlockDaoImpl implements CidrBlockDao {
     @Override
     public List<CidrBlock> getSectionCidrBlocks( int vid) {
 
-        String getPartsCidrBlocks = "SELECT IPs1, IPs2, IPs3 FROM CidrBlock.UsedBlocks where VPC = ?";
+        String getPartsCidrBlocks = "SELECT IPs1, IPs2, IPs3, fullIntIP FROM CidrBlock.UsedBlocks where VPC = ?";
         Object[] param = {vid};
         List<CidrBlock> cidrblocks = jdbcTemplate.query(getPartsCidrBlocks, param, new CidrBlockDaoImpl.CidrBlockPartsRowMapper());
         return cidrblocks;
@@ -65,6 +65,7 @@ public class CidrBlockDaoImpl implements CidrBlockDao {
             cidrBlock.setIPs1(rs.getInt("IPs1"));
             cidrBlock.setIPs2(rs.getInt("IPs2"));
             cidrBlock.setIPs3(rs.getInt("IPs3"));
+            cidrBlock.setFullIntIp(rs.getString("fullIntIP"));
 
 
             return cidrBlock;
@@ -73,13 +74,13 @@ public class CidrBlockDaoImpl implements CidrBlockDao {
 
 
     @Override
-    public int insertNewCidrBlock( int vid, String block, int IPs1, int IPs2, int IPs3, int bits) {
+    public int insertNewCidrBlock( int vid, String block, int IPs1, int IPs2, int IPs3, int bits, String fullIntIp) {
 
-        String insertCidrBlock = "INSERT INTO CidrBlock.UsedBlocks (VPC,block,IPs1,IPs2,IPs3,bits)\n" +
-                                         "Values (?,?,?,?,?,?)";
+        String insertCidrBlock = "INSERT INTO CidrBlock.UsedBlocks (VPC,block,IPs1,IPs2,IPs3,bits,fullIntIp)\n" +
+                                         "Values (?,?,?,?,?,?,?)";
 
-        Object[] param = {vid, block, IPs1, IPs2, IPs3, bits};
-       int[] types = {Types.INTEGER,Types.VARCHAR, Types.INTEGER, Types.INTEGER, Types.INTEGER, Types.INTEGER};
+        Object[] param = {vid, block, IPs1, IPs2, IPs3, bits,fullIntIp};
+       int[] types = {Types.INTEGER,Types.VARCHAR, Types.INTEGER, Types.INTEGER, Types.INTEGER, Types.INTEGER,Types.VARCHAR};
 
 
         return jdbcTemplate.update(insertCidrBlock, param,types);

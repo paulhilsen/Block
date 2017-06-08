@@ -27,19 +27,22 @@ public class NextIpBlock {
         List<CidrBlock> newCidrBlocks = new ArrayList<>();
 
         //Sort by IPs1 address to get the largest number
-        Collections.sort(existingCidrBlocks, (c1, c2) -> c2.getIPs3()-c1.getIPs3());
+        Collections.sort(existingCidrBlocks, (c1, c2) -> (c2.getFullIntIp().compareTo(c1.getFullIntIp())));
+
 
         //if IPs1 is not full yet
         if(existingCidrBlocks.get(0).getIPs3() < 240) {
 
             //Code to create new cider block
             CidrBlock cidrBlock = new CidrBlock();
+            cidrBlock.setVid(vid);
             cidrBlock.setIPs1(existingCidrBlocks.get(0).getIPs1());
             cidrBlock.setIPs2(existingCidrBlocks.get(0).getIPs2());
             cidrBlock.setIPs3(existingCidrBlocks.get(0).getIPs3() + 16);
             cidrBlock.setIpBlock("10." + cidrBlock.getIPs1() + "." + cidrBlock.getIPs2() + "." + cidrBlock.getIPs3() + "/28" );
+            cidrBlock.setFullIntIp(String.format("%03d",cidrBlock.getIPs1()) + "." + String.format("%03d", cidrBlock.getIPs2()) + "." + String.format("%03d",cidrBlock.getIPs3())); // need to concatenate values
 
-            cidrBlockDao.insertNewCidrBlock(vid,cidrBlock.getIpBlock(),cidrBlock.getIPs1(),cidrBlock.getIPs2(),cidrBlock.getIPs3(),28);
+            cidrBlockDao.insertNewCidrBlock(vid,cidrBlock.getIpBlock(),cidrBlock.getIPs1(),cidrBlock.getIPs2(),cidrBlock.getIPs3(),28,cidrBlock.getFullIntIp());
 
             newCidrBlocks.add(cidrBlock);
             return newCidrBlocks;
@@ -47,22 +50,23 @@ public class NextIpBlock {
 
         //If IPs3 is full
         if(existingCidrBlocks.get(0).getIPs3() >= 240) {
-            Collections.sort(existingCidrBlocks, (c1, c2) -> c2.getIPs2() - c1.getIPs2());
+            Collections.sort(existingCidrBlocks, (c1, c2) -> (c2.getFullIntIp().compareTo(c1.getFullIntIp())));
 
             if (existingCidrBlocks.get(0).getIPs2() < 255) {
 
 
                 //Code to create new cider block
                 CidrBlock cidrBlock = new CidrBlock();
-
-
+                cidrBlock.setVid(vid);
                 cidrBlock.setIPs1(existingCidrBlocks.get(0).getIPs1());
                 cidrBlock.setIPs2(existingCidrBlocks.get(0).getIPs2() + 1);
-                if(existingCidrBlocks.get(0).getIPs3() >= 240 ) {cidrBlock.setIPs3(0);}
+                if(existingCidrBlocks.get(0).getIPs3() >= 240 ) {cidrBlock.setIPs3(0);}  // if its getting too full, reset to 0;
                 else{ cidrBlock.setIPs3(existingCidrBlocks.get(0).getIPs1());}
                 cidrBlock.setIpBlock("10." + cidrBlock.getIPs1() + "." + cidrBlock.getIPs2() + "." + cidrBlock.getIPs3() + "/28");
+                cidrBlock.setFullIntIp(String.format("%03d",cidrBlock.getIPs1()) + "." + String.format("%03d", cidrBlock.getIPs2()) + "." + String.format("%03d",cidrBlock.getIPs3())); // need to concatenate values
 
-                cidrBlockDao.insertNewCidrBlock(vid, cidrBlock.getIpBlock(), cidrBlock.getIPs1(), cidrBlock.getIPs2(), cidrBlock.getIPs3(), 28);
+                //Insert New block into DB
+                cidrBlockDao.insertNewCidrBlock(vid, cidrBlock.getIpBlock(), cidrBlock.getIPs1(), cidrBlock.getIPs2(), cidrBlock.getIPs3(), 28,cidrBlock.getFullIntIp());
 
                 newCidrBlocks.add(cidrBlock);
                 return newCidrBlocks;
@@ -70,21 +74,24 @@ public class NextIpBlock {
         }
             //if IPs2 is full
         if(existingCidrBlocks.get(0).getIPs3() >= 240) {
-            Collections.sort(existingCidrBlocks, (c1, c2) -> c2.getIPs2() - c1.getIPs2());
+            Collections.sort(existingCidrBlocks, (c1, c2) -> (c2.getFullIntIp().compareTo(c1.getFullIntIp())));
 
             if (existingCidrBlocks.get(0).getIPs2() >= 255) {
-                Collections.sort(existingCidrBlocks, (c1, c2) -> c2.getIPs1() - c1.getIPs1());
+                Collections.sort(existingCidrBlocks, (c1, c2) -> (c2.getFullIntIp().compareTo(c1.getFullIntIp())));
 
                 if (existingCidrBlocks.get(0).getIPs1() < 255) {
 
                     //Code to create new cider block
                     CidrBlock cidrBlock = new CidrBlock();
+                    cidrBlock.setVid(vid);
                     cidrBlock.setIPs1(existingCidrBlocks.get(0).getIPs1() + 1);
                     cidrBlock.setIPs2(existingCidrBlocks.get(0).getIPs2());
                     cidrBlock.setIPs3(existingCidrBlocks.get(0).getIPs3());
                     cidrBlock.setIpBlock("10." + cidrBlock.getIPs1() + "." + cidrBlock.getIPs2() + "." + cidrBlock.getIPs3() + "/28");
+                    cidrBlock.setFullIntIp(String.format("%03d",cidrBlock.getIPs1()) + "." + String.format("%03d", cidrBlock.getIPs2()) + "." + String.format("%03d",cidrBlock.getIPs3())); // need to concatenate values
 
-                    cidrBlockDao.insertNewCidrBlock(vid, cidrBlock.getIpBlock(), cidrBlock.getIPs1(), cidrBlock.getIPs2(), cidrBlock.getIPs3(), 28);
+                    //Insert new block into DB
+                    cidrBlockDao.insertNewCidrBlock(vid, cidrBlock.getIpBlock(), cidrBlock.getIPs1(), cidrBlock.getIPs2(), cidrBlock.getIPs3(), 28,cidrBlock.getFullIntIp());
 
 
 
@@ -99,11 +106,12 @@ public class NextIpBlock {
             }
         }
         //???????????????
-        ////RETURN ERROR IF NONE OF THE ABOVE WORK//////
+        //RETURN ERROR IF NONE OF THE ABOVE WORK//////
         //???????????????
         return existingCidrBlocks;
 
     }
+
 
 
 }
