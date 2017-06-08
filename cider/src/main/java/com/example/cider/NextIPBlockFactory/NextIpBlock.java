@@ -60,7 +60,7 @@ public class NextIpBlock {
                 cidrBlock.setVid(vid);
                 cidrBlock.setIPs1(existingCidrBlocks.get(0).getIPs1());
                 cidrBlock.setIPs2(existingCidrBlocks.get(0).getIPs2() + 1);
-                if(existingCidrBlocks.get(0).getIPs3() >= 240 ) {cidrBlock.setIPs3(0);}  // if its getting too full, reset to 0;
+                if(existingCidrBlocks.get(0).getIPs3() >= 240 ) {cidrBlock.setIPs3(0); }  // if its getting too full, reset to 0;
                 else{ cidrBlock.setIPs3(existingCidrBlocks.get(0).getIPs1());}
                 cidrBlock.setIpBlock("10." + cidrBlock.getIPs1() + "." + cidrBlock.getIPs2() + "." + cidrBlock.getIPs3() + "/28");
                 cidrBlock.setFullIntIp(String.format("%03d",cidrBlock.getIPs1()) + "." + String.format("%03d", cidrBlock.getIPs2()) + "." + String.format("%03d",cidrBlock.getIPs3())); // need to concatenate values
@@ -85,7 +85,8 @@ public class NextIpBlock {
                     CidrBlock cidrBlock = new CidrBlock();
                     cidrBlock.setVid(vid);
                     cidrBlock.setIPs1(existingCidrBlocks.get(0).getIPs1() + 1);
-                    cidrBlock.setIPs2(existingCidrBlocks.get(0).getIPs2());
+                    if(existingCidrBlocks.get(0).getIPs2()>= 255 ) {cidrBlock.setIPs2(0); cidrBlock.setIPs3(0); }  //DIDNT SEEM TO WORK???
+                    else{cidrBlock.setIPs2(existingCidrBlocks.get(0).getIPs2());}
                     cidrBlock.setIPs3(existingCidrBlocks.get(0).getIPs3());
                     cidrBlock.setIpBlock("10." + cidrBlock.getIPs1() + "." + cidrBlock.getIPs2() + "." + cidrBlock.getIPs3() + "/28");
                     cidrBlock.setFullIntIp(String.format("%03d",cidrBlock.getIPs1()) + "." + String.format("%03d", cidrBlock.getIPs2()) + "." + String.format("%03d",cidrBlock.getIPs3())); // need to concatenate values
